@@ -1,0 +1,29 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    
+<div class="row" style="padding-top:10rem;">
+    <div class="col-lg-6 mx-auto">
+        <div class="box-element  text-center" id="form-wrapper">
+  
+                <h3 >Thank You for the Purchase</h3>
+                <br>
+    
+                <a class="btn btn-success" href="{% url 'shop' %}">Return to Shop</a>
+
+           
+           
+           <a class="btn btn-success" href="{% url 'orders' %}">View Order History</a>
+
+        </div>
+        <br>
+       
+    </div> 
+
+  
+</div>
+
+{% endblock content %}

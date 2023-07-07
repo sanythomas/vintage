@@ -1,0 +1,359 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <!-- Shop Details Section Begin -->
+    <section class="shop-details spad">
+        <div class="product__details__pic">
+            <div class="container">
+                <div class="row" style="margin-top: 8rem;">
+                    <div class="col-lg-12">
+                        <div class="product__details__breadcrumb">
+                            <a href="./index.html">Home</a>
+                            <a href="./shop.html">Shop</a>
+                            <span>Product Details</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
+                                    <div class="product__thumb__pic set-bg magnified " data-setbg="{{ product.imageURL }}"></div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
+                                    <div class="product__thumb__pic set-bg" data-setbg="{{ product.image1URL }}">
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
+                                    <div class="product__thumb__pic set-bg " data-setbg="{{ product.image2URL }}">
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
+                                    <div class="product__thumb__pic set-bg " data-setbg="{{ product.image3URL }}">
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 col-md-9">
+                        <div class="tab-content">
+                            <div class="tab-pane active " id="tabs-1" role="tabpanel">
+                                <div class="product__details__pic__item">
+                                    <img class="zoom" src="{{ product.imageURL }}" >
+                                </div>
+                                
+                            </div>
+                            <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                <div class="product__details__pic__item">
+                                    <img class="zoom" src="{{ product.image1URL }}" alt="">
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                <div class="product__details__pic__item">
+                                    <img class="zoom" src="{{ product.image2URL }}" alt="">
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tabs-4" role="tabpanel">
+                                <div class="product__details__pic__item">
+                                    <img class="zoom" src="{{ product.image3URL }}" alt="">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product__details__content">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="product__details__text">
+                            <h4>{{product.name}}</h4>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o"></i>
+                                <span> - 5 Reviews</span>
+                            </div>
+                         
+                            {% if product.offer %}
+                         
+                            <h3 id="product_price">&#8377; {{ product.offerPrice|floatformat:2 }} </h3>
+                            <h4 class="text-danger" style="text-decoration: line-through;">&#8377; {{product.price|floatformat:2}}</h4>
+
+                              
+                            {% else %}
+                                <h3 id="product_price" >&#8377;{{ product.price|floatformat:2 }} </h3>
+                            {% endif %}
+                     
+                            <p>{{product.description}}</p>
+                            <div class="product__details__option">
+
+                                {% if product.size_variant %}
+                                <div class="product__details__option__size">
+
+                                    <span>Size:</span>
+                                    {% for size in product.size_variant.all %}
+                                    {% csrf_token %}
+                                        {%if size.size_name == 'S' %}
+                                        <label class="active"  for="{{size.size_name}}">{{size.size_name}}
+                                            <input type="radio"  onclick="get_correct_price('{{size.size_name}}')" id="{{size.size_name}}">
+                                        </label>
+                                        {% else %}
+                                        <label for="{{size.size_name}}">{{size.size_name}}
+                                            <input type="radio"  onclick="get_correct_price('{{size.size_name}}')" id="{{size.size_name}}">
+                                        </label>
+                                        {% endif %}
+                                    
+                                    {% endfor %}
+                                  
+                                </div>
+                                {% endif %}
+                                <div class="product__details__option__color">
+                                    <span>Color:</span>
+                                    {% for color in product.color_variant.all %}
+                                    <label for="sp-1" style="background-color:{{ color.color_name }}">
+                                        <input type="radio" id="sp-1">
+                                    </label>
+                                    {% endfor %}
+                                  
+                                </div>
+                           
+                            </div>
+                            <div class="product__details__cart__option">
+                                {% if product.quantity == 0 %}
+                                <h3 class="text-danger">Out of Stock</h3>
+                                {% else %}
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <input type="text" value="1">
+                                    </div>
+                                </div>
+                                {% csrf_token %}
+                                <a data-product = {{product.id}} data-action="add" class="primary-btn update-cart" id="detail-add-to-cart">add to cart</a>
+                                {% endif %}
+                            </div>
+                            <div class="product__details__btns__option">
+                                <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+                                <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a>
+                            </div>
+                            <div class="product__details__last__option">
+                                <h5><span>Guaranteed Safe Checkout</span></h5>
+                                <img src="{% static 'images/shop-details/details-payment.png' %}" alt="">
+                                <ul>
+                                    <li><span>SKU:</span> 3812912</li>
+                                    <li><span>Categories:</span> {{product.category.category_name}}</li>
+                                    <li><span>Tag:</span> Clothes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Shop Details Section End -->
+
+    <!-- Related Section Begin -->
+    <section class="related spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="related-title">Related Products</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'images/product/coat1.webp' %}">
+                            <span class="label">New</span>
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="{% static 'images/product/heart.png' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'images/product/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="{% static 'images/product/search.png' %}" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6> Embroidery Jacket</h6>
+                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            <div class="rating">
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                            <h5>₹670.24</h5>
+                            <div class="product__color__select">
+                                <label for="pc-1">
+                                    <input type="radio" id="pc-1">
+                                </label>
+                                <label class="active black" for="pc-2">
+                                    <input type="radio" id="pc-2">
+                                </label>
+                                <label class="grey" for="pc-3">
+                                    <input type="radio" id="pc-3">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'images/product/dress9.webp' %}">
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="{% static 'images/product/heart.png' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'images/product/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="{% static 'images/product/search.png' %}" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>Multicolored Shirt</h6>
+                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            <div class="rating">
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                            <h5>₹7670</h5>
+                            <div class="product__color__select">
+                                <label for="pc-4">
+                                    <input type="radio" id="pc-4">
+                                </label>
+                                <label class="active black" for="pc-5">
+                                    <input type="radio" id="pc-5">
+                                </label>
+                                <label class="grey" for="pc-6">
+                                    <input type="radio" id="pc-6">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                    <div class="product__item sale">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'images/product/dress6.webp' %}">
+                            <span class="label">Sale</span>
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="{% static 'images/product/heart.png' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'images/product/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="{% static 'images/product/search.png' %}" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>Multi-pocket Pant</h6>
+                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                            <h5>₹4300.48</h5>
+                            <div class="product__color__select">
+                                <label for="pc-7">
+                                    <input type="radio" id="pc-7">
+                                </label>
+                                <label class="active black" for="pc-8">
+                                    <input type="radio" id="pc-8">
+                                </label>
+                                <label class="grey" for="pc-9">
+                                    <input type="radio" id="pc-9">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'images/product/newdress1.webp' %}">
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="{% static 'images/product/heart.png' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'images/product/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="{% static 'images/product/search.png' %}" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>Long Dress</h6>
+                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            <div class="rating">
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                            <h5>₹6000.9</h5>
+                            <div class="product__color__select">
+                                <label for="pc-10">
+                                    <input type="radio" id="pc-10">
+                                </label>
+                                <label class="active black" for="pc-11">
+                                    <input type="radio" id="pc-11">
+                                </label>
+                                <label class="grey" for="pc-12">
+                                    <input type="radio" id="pc-12">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> 
+    <script>
+        const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
+        function get_correct_price(size){
+            document.getElementById('detail-add-to-cart').setAttribute("data-size_variant", size)
+
+            $.ajax({
+                type: 'POST',
+                url: 'size-change/',
+                data:{
+                    'csrfmiddlewaretoken': csrf,
+                    'size': size
+                },
+                success: (data) => {
+                   
+                    
+                    document.getElementById('product_price').innerHTML = '&#8377; ' +  data.updated_price
+    
+    
+                },
+                error: (err) => {
+                    console.log(err)
+                }
+    
+            })
+    
+        }
+    
+            //window.location.href = window.location.pathname + `?size=${size}`
+        
+    </script>
+
+    
+    <!-- Related Section End -->
+
+{% endblock content %}

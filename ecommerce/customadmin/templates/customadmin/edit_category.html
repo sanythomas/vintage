@@ -1,0 +1,77 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid h-100">
+    <div class="col-md-12 ml-auto">
+        <a href="{% url 'category' %}"><button type="submit" class=" btn btn-sm btn-secondary text-light">Back</button></a>
+      </div>
+    
+    <div class="row ">
+        <div style="text-decoration: underline;" class="font-weight-bold text-decoration-underline text-secondary pt-5 col-md-12 d-flex justify-content-center">
+            <h4>Edit Category Details</h4>
+        </div>
+    </div>
+    <div class="row m-3">
+        <div class="col-md-6  mx-auto border border-success  ">
+        <!-- form start -->
+            <form class="p-5 w-100 text-dark " method="post" >
+                {% csrf_token %}
+                <div class="form-group  p-3">
+                    
+                    <label for="category">Choose a Category:</label>
+                    <select name="category" id="category">
+                        
+                        {% for category in category %}
+                            {% if  category.category_name == currentcategory.category_name %}
+                                <option selected>{{currentcategory.category_name}}</option>
+                            {%else %}
+                                <option >{{category.category_name}}</option>
+                            {% endif %}
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+                <div class="form-group  p-3">
+                    <label for="offer">Choose an offer Percetage:</label>
+                        <select name="offerid" id="offer" >
+                            <option value="" selected>No Offer</option>
+                        {% for offer in offer %}
+                       
+                            {% if  offer.discount == product.offer.discount %}
+                                <option value="{{product.offer_id}}" selected>{{product.offer.discount}}</option>
+                            {%else %}
+                               
+                                <option value="{{offer.id}}">{{offer.discount}}</option>
+
+                            {% endif %}
+
+                        {% endfor %}
+                            
+                        </select>
+                </div>
+                
+                <button type="submit" class="btn btn-sm btn-secondary text-light m-3">Submit</button>
+            </form>
+        </div>
+    </div>
+            <!-- form end -->
+    <div class="row">
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+                    <strong class="text-danger">{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+</div>
+
+
+{% endblock content%}

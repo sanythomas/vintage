@@ -1,0 +1,43 @@
+{% extends 'store/main.html' %}
+
+ {% block content %}
+
+  <div class="row">  
+    <div class="col-md-6 mx-auto contents">
+      <div class="row justify-content-center">
+        <div class="col-md-8 p-5" style="margin-top: 142px;background-color: #c1efde;margin-bottom: 100px;">
+          <div class="mb-4">
+              <h3>Login with OTP</h3>
+          </div>
+            <form  action="" method="post" class="needs-validation" novalidate>
+              {% csrf_token %}
+              <div class="form-group first">
+                  <label for="phone">Phone number</label>
+                  <input name ="phone_number" type="text" class="form-control" id="mobilephone" required>
+                  <div class="invalid-feedback">
+                    Please provide your registered mobile number
+                  </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <input type="submit" value="Send OTP" class="btn text-white btn-block btn-primary mt-3">
+                <a class="ms-auto text-muted" href="{% url 'signin' %}">Login with password</a>
+              </div>
+
+              {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+                    <strong class="text-danger">{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+              {%endfor%}
+            </form>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+
+
+ {% endblock content %}

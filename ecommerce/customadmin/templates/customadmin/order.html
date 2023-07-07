@@ -1,0 +1,107 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid px-4">
+    <div class="row my-5">
+        <div>
+            <h3 class="fs-4 mb-3">Order Management</h3>
+            
+        </div>
+        <div>
+            <a class="btn btn-sm btn-outline-success float-end mb-3 " href="addorder">Add Order</a>
+        </div>
+        <div class="col">
+            <table id="ordertable" class="table bg-white rounded shadow-sm  table-hover" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Device Id</th>
+                        <th>Order Id</th>
+                        <th>Date Ordered</th>
+                        <th>Complete</th>
+                        <th>Status</th>
+                        <th>transaction id</th>
+                        <th>Details</th>
+                        <th>Edit</th>
+                       
+                        
+                    </tr>
+                </thead>
+    
+                
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{order.user.first_name}}</td>
+                        <td><small>{{order.user.device}}</small></td>
+                        <td>{{order.id}}</td>
+                        <td>{{order.date_ordered}}</td>
+                        <td>{{order.complete}}</td>
+                        <th>{{order.status}}</th>
+                        <td>{{order.transaction_id}}</td>
+                        <th><a href="" data-bs-toggle="modal" data-bs-target="#blockModal{{order.id}}"> <small>View details</small></a></th>
+
+
+                        <td><a class="btn btn-sm btn-primary" href="updateorder/{{order.id}}">Update</a></td>
+                        
+                    </tr>
+                   
+                  
+              
+                    <!-- Modal Orderitem -->
+                  
+ 
+                            <div class="modal fade" id="blockModal{{order.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <p class="modal-title text-danger fw-bold fs-4" id="exampleModalLabel">Order Details</p>
+                                    </div>
+                                    <div class="modal-body ">
+                                        {% for orderitem in order.orderitem_set.all %}
+                                            <div class="row">
+                                                <div class="col-md-6 fw-bold">
+                                                    Item <br>
+                                                    Order id<br>
+                                                    Quantity<br>
+                                                    Invoice
+                                                </div>
+                                                <div class="col-md-6">  
+                                                    {{orderitem.product.name}} <br>
+                                                    {{orderitem.order.id}} <br>
+                                                    {{orderitem.quantity}} <br>
+                                                    <a href="/ecommerce/store/views.py/view_invoice/{{order.id}}">View Invoice</a>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        {% endfor %} 
+                                     
+                                       
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+                                    
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                 
+                        
+                        
+                
+
+                    
+                </tbody>
+                
+            </table>
+        </div>
+ 
+    </div>
+</div>
+
+{% endblock content%}

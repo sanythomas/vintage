@@ -1,0 +1,37 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="row" style="padding-top:10rem;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 p-4">
+                <div class="invoice-title">
+                    <h3 class="my-4 border-bottom pb-1">Edit Profile</h3>
+                </div>
+                <hr>
+                <div class="col-md-9">
+                    {% if msg %}
+                    <p class="text-success">{{msg}}</p>
+                    {% endif %}
+                    <table class="table table-bordered">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{form.as_table}}
+                            <tr>
+                                <td colspan="2">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+    </div>
+  
+</div>
+{% endblock content %}

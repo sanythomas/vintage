@@ -1,0 +1,142 @@
+{% extends 'store/main.html'%}
+
+{% load static %}
+
+  
+
+  
+{% block content %}
+
+
+<div class="row " style="margin:10rem 3rem 3rem 3rem">
+
+
+  <div class="col-md-6  ">
+    <!-- <form class="needs-validation " novalidate>
+      <div class="form-row mx-auto ">
+        <div class="col-md-8 mb-3 ">
+          <label for="validationCustom01">First name</label>
+          <input type="text" class="form-control" id="validationCustom01" placeholder="First name" value="Mark" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-md-8 mb-3">
+          <label for="validationCustom02">Last name</label>
+          <input type="text" class="form-control" id="validationCustom02" placeholder="Last name" value="Otto" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validationCustomUsername">Username</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupPrepend">@</span>
+            </div>
+            <input type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+            <div class="invalid-feedback">
+              Please choose a username.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-6 mb-3">
+          <label for="validationCustom03">City</label>
+          <input type="text" class="form-control" id="validationCustom03" placeholder="City" required>
+          <div class="invalid-feedback">
+            Please provide a valid city.
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="validationCustom04">State</label>
+          <input type="text" class="form-control" id="validationCustom04" placeholder="State" required>
+          <div class="invalid-feedback">
+            Please provide a valid state.
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="validationCustom05">Zip</label>
+          <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" required>
+          <div class="invalid-feedback">
+            Please provide a valid zip.
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Submit form</button>
+    </form> -->
+    <div class="mb-4">
+      <h1>Create Your Account</h1>
+      <p class="mb-4">Creating an account makes it easy to manage orders, access free online courses, and earn rewards.</p>
+    </div> 
+  </div>
+
+  <div class="col-md-6 ">
+
+    <div class="row justify-content-center">
+      <div class="col-md-9 p-5" style="background-color: #c1efde;">
+          
+        <form action= "" method="post" id="form" onsubmit="return validateInputs()">
+          {% csrf_token %}
+          <div class="form-group input-control">
+            <label for="first_name">First Name</label>
+            <input name="first_name" type="text" class="form-control" id="first_name">
+            <div class="error"></div>
+          </div>
+          <div class="form-group input-control">
+            <label for="last_name">Last Name</label>
+            <input name="last_name" type="text" class="form-control" id="last_name">
+            <div class="error"></div>
+          </div>
+          
+          <div class="form-group input-control">
+            <label for="username">Email</label>
+            <input name="email" type="text" class="form-control" id="username">
+            <div class="error"></div>
+          </div>
+
+          <div class="form-group input-control">
+            <label for="username">Phone</label>
+            <input name="phone" type="text" class="form-control" id="phone">
+            <div class="error"></div>
+          </div>
+        
+          <div class="form-group input-control">
+            <label for="password">Password</label>
+            <input name="password1" type="password" class="form-control" id="password1">
+            <div class="error"></div>
+          </div>
+          <div class="form-group mb-2 input-control">
+            <label for="password">Password Again</label>
+            <input name="password2" type="password" class="form-control" id="password2">
+            <div class="error"></div>
+          </div>
+
+          {% for message in messages %}
+          <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+              <strong class="text-danger">{{message}}</strong>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          {%endfor%}
+          <div class="d-flex">
+            <input type="submit" value="Sign up" class="btn text-white btn-block btn-primary">
+          </div>
+        </form>
+        <span class="text-muted ms-auto">Already a member? <a href="{% url 'signin' %}">Log in</a></span>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+
+</div>
+     
+
+
+{% endblock content %}
+

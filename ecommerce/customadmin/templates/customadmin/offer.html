@@ -1,0 +1,52 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid px-4">
+    <div class="row my-5">
+      <div>
+        <h3 class="fs-4 mb-3">Offer management</h3>
+      </div>
+      <div>
+        <a class="btn btn-sm btn-outline-success float-end mb-3 " href="addoffer">Add offer</a>
+      </div>
+      <div class="col">
+        <table id="offertable" class="table bg-white rounded shadow-sm  table-hover" style="width:100%">
+          <thead>
+            <tr>
+              <th>Discount</th>
+              <th>Valid from </th>
+              <th>Valid to</th>
+              <th>Is active</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          
+        
+          <tbody>
+            {% for offer in offers %}
+  
+          <tr>
+            
+            <td class="text-success fw-bold "> {{offer.discount}} %</td>
+            <td>{{offer.valid_from}}</td>
+            <td>{{offer.valid_to}}</td>
+            <td>{{offer.is_active}}</td>
+            <td><a class="btn btn-sm btn-primary" href="editoffer/{{offer.id}}">Edit</a></td>
+            <td><a class="btn btn-sm btn-danger" href="deleteoffer/{{offer.id}}">Delete</a></td>
+            
+            
+          </tr>
+          {%endfor%}
+          </tbody>
+          
+          
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock content%}

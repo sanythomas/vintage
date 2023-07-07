@@ -1,0 +1,57 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid h-100">
+    <div class="col-md-12 ml-auto">
+        <a href="{% url 'category' %}"><button type="submit" class=" btn btn-sm btn-secondary text-light">Back</button></a>
+      </div>
+    
+    <div class="row ">
+        <div style="text-decoration: underline;" class="font-weight-bold text-decoration-underline text-secondary pt-5 col-md-12 d-flex justify-content-center">
+            <h4>Enter New Category Details</h4>
+        </div>
+    </div>
+    <div class="row  m-3">
+        <div class="col-md-6  mx-auto border border-success  ">
+        <!-- form start -->
+            <form class="p-5 w-100 text-dark " method="POST" >
+                {% csrf_token %}
+                <div class="form-group col-md-9 pb-3">
+                    <input name="category_name" type="text" class="form-control" placeholder="Category Name" >
+                </div>
+                <div class="form-group  pb-3">
+                    
+                    <label for="offer">Choose an offer Percetage:</label>
+                        <select name="offerid" id="offer" >
+                            <option value="" selected>No Offer</option>
+                            {% for offer in offer %}
+                                <option value="{{offer.id}}">{{offer.discount}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                </div>
+                
+                <button type="submit" class="btn btn-sm btn-secondary text-light">Submit</button>
+            </form>
+        </div>
+    </div>
+            <!-- form end -->
+    <div class="row">
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+                    <strong class="text-danger">{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+</div>
+
+
+{% endblock content%}

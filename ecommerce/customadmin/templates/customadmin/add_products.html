@@ -1,0 +1,122 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid h-100">
+    <div class="col-md-12 ml-auto">
+        <a href="{% url 'products' %}"><button type="submit" class=" btn btn-secondary text-light">Back</button></a>
+      </div>
+    
+    <div class="row ">
+        <div style="text-decoration: underline;" class="font-weight-bold text-decoration-underline text-secondary  col-md-12 d-flex justify-content-center">
+            <h4>Enter New Product Details</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12  ">
+        <!-- form start -->
+            <form class="p-5 w-100 text-dark " method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <div class="form-group ">
+                    <input name="product_name" type="text" class="form-control" placeholder="Product Name" >
+                </div>
+                <hr>
+                <div class="form-group ">
+                    <input name="price" type="number" class="form-control" placeholder="Price">
+                </div>
+                <hr>
+                <div class="form-group ">
+                    <input name="stock" type="number" class="form-control" placeholder="Stock">
+                </div>
+                <hr>
+                <div class="form-group">
+                    <textarea name = "description" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Description"></textarea>
+                  </div>
+                <!-- <div class="form-group">
+                    <input name="description" type="text" class="form-control" placeholder="Description">
+                </div> -->
+                <hr>
+                <div class="form-group">
+                    <input name="image" type="file" class="form-control" placeholder="Image">
+                </div>
+
+                <div class="form-group">
+                    <input name="image" type="file" class="form-control" placeholder="Image">
+                </div>
+                <div class="form-group">
+                    <input name="image" type="file" class="form-control" placeholder="Image">
+                </div>
+                <div class="form-group">
+                    <input name="image" type="file" class="form-control" placeholder="Image">
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    
+                    <label for="size">Choose a size:</label>
+                        <select name="size" id="size" >
+                          
+                            {% for size in size %}
+                                <option value="{{size.id}}">{{size.size_name}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    
+                    <label for="color">Choose a Color:</label>
+                        <select name="color" id="color" >
+                          
+                            {% for color in color %}
+                                <option value="{{color.id}}">{{color.color_name}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                </div>
+                <hr>
+
+                <div class="form-group ">
+                    
+                    <label for="cars">Choose a Category:</label>
+                        <select name="category" id="category" >
+                           
+                            {% for category in category %}
+                                <option value="{{category.id}}">{{category.category_name}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                </div>
+                <hr>
+                
+                <div class="form-group">
+                    
+                </div>
+                
+                <button type="submit" class="btn btn-secondary text-light">Submit</button>
+            </form>
+        </div>
+    </div>
+            <!-- form end -->
+    <div class="row">
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+                    <strong class="text-danger">{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+</div>
+
+    
+      
+
+{% endblock content%}

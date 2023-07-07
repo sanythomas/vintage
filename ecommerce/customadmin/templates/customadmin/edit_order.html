@@ -1,0 +1,104 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid h-100">
+    <div class="col-md-12 ml-auto">
+        <a href="{% url 'adminorder' %}"><button type="submit" class=" btn btn-secondary text-light">Back</button></a>
+    </div>
+    
+    <div class="row ">
+        <div style="text-decoration: underline;" class="font-weight-bold text-decoration-underline text-secondary  col-md-12 d-flex justify-content-center " >
+            <h4>Edit Order Details</h4>
+        </div>
+    </div>
+    <div class="row m-3">
+        <div class="col-md-6  mx-auto border border-success ">
+            <div class="row" >
+                <form class="p-5 w-100 text-dark " method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="form-group row">
+                       
+                        <label class="col-md-6" for="firstname">User</label>
+                        <select class="col-md-6" name="first_name" id="firstname">
+                            {% for user in user %}
+                                {% if order.user.first_name == user.first_name %}
+                                    <option value="{{order.user_id}}" selected>{{order.user.first_name}}</option>
+                                {% else %}
+                                    <option value="{{user.id}}">{{user.first_name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                       
+                        
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                       
+                        <label class="col-md-6" for="shippingaddress">Shipping Address</label>
+                        <select class="col-md-6" name="shippingaddress" id="shippingaddress">
+                            {% for shippingaddress in shippingaddress %}
+                                {% if shippingaddress.id == order.shippingaddress_id %}
+                                    <option value="{{order.shippingaddress_id}}" selected>{{order.shippingaddress_id}}</option>
+                                {% else %}
+                                    <option value="{{shippingaddress.id}}">{{shippingaddress.id}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                       
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label class="col-md-6" for="shippingaddress">Complete</label>
+                        <input class="col-md-6" name="complete" value="{{order.complete}}" type="checkbox" {% if order.complete %} checked {% endif %}>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label class="col-md-6" for="transaction_id">Transaction id</label>
+                        <input class="col-md-6" id="transaction_id" name="transaction_id" value="{{order.transaction_id}}" type="text">
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                       
+                        <label class="col-md-6" for="status">Status</label>
+                        <select class="col-md-6" name="status" id="status">
+                            {% for i in order.STATUS %}
+                                {% if order.status == i.1 %}
+                                    <option selected>{{order.status}}</option>
+                                {% else %}
+                                    <option>{{i.1}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                       
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-secondary text-light">Update</button>
+                </form>
+            </div>
+        <!-- form start -->
+          
+        </div>
+    </div>
+            <!-- form end -->
+    <div class="row">
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+                    <strong class="text-danger">{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+</div>
+
+    
+      
+
+{% endblock content%}

@@ -1,0 +1,56 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+
+
+<div class="container-fluid px-4">
+  <div class="row my-5">
+    <div>
+      <h3 class="fs-4 mb-3">Category Management</h3>
+    </div>
+    <div>
+      <a class="btn btn-sm btn-outline-success float-end mb-3 " href="addcategory">Add category</a>
+    </div>
+    <div class="col">
+      <table id="categorytable" class="table bg-white rounded shadow-sm  table-hover" style="width:100%">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Offer</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        
+      
+        <tbody>
+          {% for category in category %}
+
+        <tr>
+          
+          <td>{{category.category_name}}</td>
+          <td></td>
+          {% if category.offer %}
+            <td class="text-success fw-bold">{{category.offer.discount}} %</td>
+          {% else %}
+            <td class="text-secondary fw-bold">No Offer</td>
+          {% endif %}
+          <td><a class="btn btn-sm btn-primary" href="editcategory/{{category.id}}">Edit</a></td>
+          <td><a class="btn btn-sm btn-danger" href="deletecategory/{{category.id}}">Delete</a></td>
+          
+          
+        </tr>
+        {%endfor%}
+        </tbody>
+        
+        
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock content%}

@@ -1,0 +1,173 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section Begin -->
+<section class="hero ">
+    <div class="hero__slider owl-carousel">
+
+        
+        <!-- <div class="hero__items set-bg" > -->
+        <div class="hero__items set-bg " style="position:relative;" data-setbg="{% static 'images/vintage.jpeg' %}">
+            <div class="container " style="position: absolute;  bottom: 100px; left: 100px">
+                <div class="row   " style="margin-top: 7rem;">
+                    <!-- <div class="col-xl-5 col-lg-5 col-md-5 "> -->
+                    <div class="col-xl-4 col-lg-7 col-md-8">
+                        <div class="hero__text "> 
+                            <a href="{% url 'shop' %}" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                            
+                        </div>
+                    </div>
+                   
+                    
+                 
+                </div>
+
+                
+            </div>
+           
+            
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Banner Section Begin -->
+<section class="banner spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 offset-lg-4">
+                <div class="banner__item">
+                    <div class="banner__item__pic" style="margin-left:150px">
+                        <img src="{% static 'images/banner/vintage_home.jpg' %}" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2 style="margin-right:100px">Best Sellers</h2>
+                        <a href="#">Shop now</a>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</section>
+<!-- Banner Section End -->
+
+
+
+<!-- Product Section Begin -->
+<div class="container">
+    <nav class="row">
+        <div class="col-lg-12 ">
+            <div class="nav nav-tabs filter__controls justify-content-center" id="nav-tab" role="tablist">
+                <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">New Arrivals</button>
+                <button class="nav-link" id="nav-contact-tab" data-toggle="tab" data-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Hot Sales</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tab-content" id="nav-tabContent">
+
+        <div class="tab-pane fade show active product spad" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="row product__filter">
+                {% for product in new_4_products %}
+                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">   
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{{product.imageURL}}">
+                            <span class="label">New</span>
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="{% static 'images/icon/heart.png' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'images/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="{% static 'images/icon/search.png' %}" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>{{product.name}}</h6>
+                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            <div class="rating">
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                            {% if product.offer  %}
+                            <div class="row ">
+                                <h5 class="text-danger col-md-5" style="text-decoration: line-through;"> &#8377; {{ product.price|floatformat:2}} </h5>
+                                <h5 class="text-success "> &#8377; {{product.offerPrice|floatformat:2 }}</h5>
+                            </div>
+                          
+
+                            {% else %}
+                                <h5> &#8377; {{product.price|floatformat:2}}</h5>
+                            {% endif %}
+                            <div class="product__color__select">
+                                <label for="pc-1">
+                                    <input type="radio" id="pc-1">
+                                </label>
+                                <label class="active black" for="pc-2">
+                                    <input type="radio" id="pc-2">
+                                </label>
+                                <label class="grey" for="pc-3">
+                                    <input type="radio" id="pc-3">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tab-pane fade product spad" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+            <div class="row product__filter">
+                {% for product in product_with_offer %}
+                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">   
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{{product.imageURL}}">
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="{% static 'images/icon/heart.png' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'images/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="{% static 'images/icon/search.png' %}" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>{{product.name}}</h6>
+                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            <div class="rating">
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                            <div class="row ">
+                                <h5 class="text-danger col-md-5" style="text-decoration: line-through;"> &#8377; {{ product.price|floatformat:2}} </h5>
+                                <h5 class="text-success "> &#8377; {{product.offerPrice|floatformat:2 }}</h5>
+                            </div>
+                            <div class="product__color__select">
+                                <label for="pc-1">
+                                    <input type="radio" id="pc-1">
+                                </label>
+                                <label class="active black" for="pc-2">
+                                    <input type="radio" id="pc-2">
+                                </label>
+                                <label class="grey" for="pc-3">
+                                    <input type="radio" id="pc-3">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+    
+{% endblock content %}

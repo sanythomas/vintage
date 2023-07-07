@@ -1,0 +1,72 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid h-100">
+    <div class="col-md-12 ml-auto">
+        <a href="{% url 'adminoffer' %}"><button class=" btn btn-secondary text-light">Back</button></a>
+      </div>
+   
+    <div class="row ">
+        <div style="text-decoration: underline;" class="font-weight-bold text-decoration-underline text-secondary  col-md-12 d-flex justify-content-center " >
+            <h4>Enter Offer Details</h4>
+        </div>
+    </div>
+    <div class="row m-3">
+        <div class="col-md-6  mx-auto border border-success ">
+            
+                <form class="p-5 w-100 text-dark " method="POST">
+                    {% csrf_token %}
+                    <div class="row" >
+                        
+                        <div class="form-group col-md-8 p-3">
+                            <label for="discount">Discount: </label>
+                            <input id="discount" name="discount" type="number" class="form-control d-inline" placeholder="Discount">
+                        </div>
+                       <br>
+                        <div class="form-group col-md-6 p-3" >
+                            <label >Valid from</label>
+                            <input name="valid_from" type="date" class="form-control" placeholder="Coupon code" >
+                        </div>
+                
+                        <div class="form-group col-md-6 p-3" >
+                            <label >Valid to</label>
+                            <input name="valid_to" type="date" class="form-control" placeholder="Coupon code" >
+                        </div>
+                        <div class="form-group col-md-6 p-3" >
+                            <label >Is Active</label>
+                            <input value="True" name="is_active" type="checkbox">
+                        </div>
+                       
+                        
+                        
+                        <button type="submit" class="btn btn-secondary text-light mt-3 col-md-3">Submit</button>
+
+                </div>
+                </form>
+          
+        <!-- form start -->
+          
+        </div>
+    </div>
+            <!-- form end -->
+    <div class="row">
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+                    <strong class="text-danger">{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+</div>
+
+    
+      
+
+{% endblock content%}

@@ -1,0 +1,47 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    
+<div class="row" style="padding-top:10rem;">
+    <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
+           <h1>Coupons</h1>
+
+        </div>
+        <br>
+        <style>
+            table {
+                border-collapse: collapse;
+                border: 1px solid black;
+            }
+        
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+            }
+        </style>
+        <table>
+            <tr>
+                <th>Coupon Code</th>
+                <th>Percentage</th>
+                <th>Valid From</th>
+                <th>Valid To</th>
+            </tr>
+            {% for coupon in coupons %}
+            <tr>
+                <td>{{ coupon.couponcode }}</td>
+                <td>{{ coupon.percent }}</td>
+                <td>{{ coupon.valid_from }}</td>
+                <td>{{ coupon.valid_to }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div> 
+
+  
+</div>
+
+{% endblock content %}

@@ -1,0 +1,154 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row" style="padding-top: 10rem;">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Shop</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{% url 'home' %}">Home</a>
+                            <span>Shop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shop Section Begin -->
+    <section class="shop spad">
+        <div class="container">
+            <div class="row">
+
+                {% include 'store/pages/sidepanel.html' %}
+
+                <div class="col-lg-9">
+                    <div class="shop__product__option">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                           
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__right">
+                                    <p>Sort by Price:</p>
+                                    <select name="sort" id="sort-list" onchange = "location = finalurl();"> 
+                                        <option value="" id="placeholder" disabled selected hidden>Sort products</option>
+                                        <option id="price" value="price">Low To High</option>
+                                        <option id="-price" value="-price">High To Low</option>
+                                        <option id="name" value="name">Product Name </option>
+                                        <option id="-date_created" value="-date_created">What's new?</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% for product in products %}
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            
+                            <div class="product__item">
+                                
+                                <div class="product__item__pic set-bg " data-setbg="{{product.imageURL}}">
+                                    <ul class="product__hover">
+                                        <li><a data-product = {{product.id}} class="addToWishlist" ><img src="{% static 'images/icon/heart.png' %}" alt=""><span>Wishlist</span></a></li>
+                                        <li><a href="#"><img src="{% static 'images/icon/compare.png' %}" alt=""> <span>Compare</span></a>
+                                        </li>
+                                        <li><a href="{% url 'shop-details' product.id %}"><img src="{% static 'images/icon/search.png' %}" alt=""></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    
+                                    <h6>{{product.name}}</h6>
+                                    {% csrf_token %}
+
+                                    {% if product.stock == 0 %}
+                                       <a class="text-danger " style="font-size: 1.25rem;"> Out of Stock </a>
+                                    {% else %}
+                                        <a data-product = {{product.id}} data-action="add" class="update-cart">+ Add To Cart</a>
+                                    {% endif %}
+                                    <div class="rating">
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+
+                                   
+
+                                        {% if product.offer  %}
+                                        <div class="row ">
+                                            <h5 class="text-danger col-md-5" style="text-decoration: line-through;"> &#8377; {{ product.price|floatformat:2}} </h5>
+                                            <h5 class="text-success "> &#8377; {{product.offerPrice|floatformat:2}} </h5>
+                                        </div>
+                                        {% else %}
+                                        <h5> &#8377; {{ product.price|floatformat:2 }}</h5>
+                                        {% endif %}
+                                      
+                                        {% if  product.stock < 10 and product.stock != 0  %}
+                                        <h6 class="text-danger"> Only {{product.stock}} remaining</h6>
+                                        {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+               
+                    </div>         
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product__pagination">
+                                {% for i in products.paginator.page_range %}
+                                    {% if products.number == i %}
+                                        <a class="active" href="">{{i}}</a>
+                                    {% else %}
+                                        <a class="" href="?page={{i}}">{{i}}</a>
+                                    {% endif %}
+                                {% endfor %}
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+   
+
+    <script>
+
+
+        // for getting the sorting status to be displayed in sorting dropdown placeholder
+        function get(name) {
+            if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))  //location.search give query sling part
+            return decodeURIComponent(name[1]);
+        }
+
+        if(get('ordering'))
+        document.getElementById('placeholder').innerHTML = "Sort: " + document.getElementById(get('ordering')).innerHTML;
+
+        // for getting url after applying ordering
+        function finalurl(){
+            var url = new URL(window.location.href) //taking the current URL 
+            
+            var search_params = url.searchParams; // taking the search parameter of the current URL. 
+            search_params.set('ordering', document.getElementById("sort-list").value) // setting the search parameter. 
+            url.search = search_params.toString() // assigning the strigified search parameter to the search property of the current URL. 
+            console.log(url)
+            //window.history.pushState("object or string", "Title", url);
+            //var new_url = url.toString();
+            return url
+        }
+        
+    </script>
+
+{% endblock content %}
+

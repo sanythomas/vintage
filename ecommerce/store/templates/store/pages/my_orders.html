@@ -1,0 +1,147 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="pb-5" style="padding-top:10rem;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mx-auto">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h4>Your Orders</h4>
+                    </div>
+                </div>
+                <br>
+                {% for order in orders %}
+                    {% for item in order.orderitem_set.all %}
+
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2 my-auto">
+                                        <img class="order_images" src="{{ item.product.imageURL}}" alt="Image here" height="70px" width="70px">
+                                    </div>
+                                    <div class="col-md-2 my-auto">
+                                        <h6>{{item.product.name}}</h6>
+                                        <small>Quantity: {{item.quantity}}</small>
+                                    </div>
+        
+                                    <div class="col-md-2 my-auto">
+                                        <h6>&#8377; {{item.product.price}}</h6>
+                                    </div>
+
+
+                                    <div class="col-md-2 my-auto">
+                                        <a href="" data-toggle="modal" data-target="#statusmodal">Order status</a>
+                                    
+                                    </div>
+                                    {% if order.status == 'Cancelled' %}
+                                        <div class="col-md-2 my-auto">
+                                            <button class="btn btn-danger"><i class="fa fa-times"></i> Cancelled</button>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-2 my-auto">
+                                            <button class="btn btn-danger" data-toggle="modal" data-target="#cancelmodal" id="cancel"><i class="fa fa-times"></i> Cancel Order</button>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="col-md-2 my-auto">
+                                        <a href="/view_invoice/{{order.id}}">View Invoice</a>
+                                    </div>
+
+                                    <div class="modal fade" id="statusmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <p class="modal-title text-danger fw-bold fs-4" id="exampleModalLabel">Order Details</p>
+                                            </div>
+                                            <div class="modal-body ">
+                                                <div class="row">
+                                                    <div class="col-md-6 fw-bold">
+                                                        Order status<br>
+                                                        
+                                                    </div>
+                                                    <div class="col-md-6">  
+                                                        {{order.status}} 
+                                                        
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-dismiss="modal">Close</button>
+                                            
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="cancelmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <p class="modal-title text-danger" id="exampleModalLabel">Cancel Order</p>
+                                            </div>
+                                            <div class="modal-body ">
+                                            Are You sure to cancel the order?
+                                            </div>
+                                            <div class="modal-footer">
+                                                {% csrf_token %}
+                                                <input type="text" id="order-id" value="{{order.id}}" hidden>
+                                                <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-dismiss="modal">Close</button>
+                                                <a href="" id="cancel-order"><button type="submit" class="btn btn-sm btn-danger">Confirm</button></a>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                 
+                    {% endfor %}
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        cancelOrder = document.getElementById('cancel-order')
+        console.log(cancelOrder)
+        cancelOrder.addEventListener('click', function(e){
+            e.preventDefault()
+            let orderId = document.getElementById('order-id').value
+            
+            var csrftoken =  $('input[name=csrfmiddlewaretoken]').val();
+            console.log(csrftoken)
+
+            $.ajax({
+                method: "POST",
+                url: "/cancel_order/",
+                data: {
+                    'orderId':orderId,
+                    csrfmiddlewaretoken : csrftoken
+                },
+                
+                success: function (response) {
+                    window.location.reload()
+                    alertify.success(response.status);
+        
+                }
+            });
+
+        })
+
+    </script>
+
+    
+  
+</div>
+
+{% endblock content %}

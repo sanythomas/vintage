@@ -1,0 +1,52 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid px-4">
+    <div class="row my-5">
+      <div>
+        <h3 class="fs-4 mb-3">Coupon Management</h3>
+      </div>
+      <div>
+        <a class="btn btn-sm btn-outline-success float-end mb-3 " href="addcoupon">Add coupon</a>
+      </div>
+      <div class="col">
+        <table id="coupontable" class="table bg-white rounded shadow-sm  table-hover" style="width:100%">
+          <thead>
+            <tr>
+            
+              <th>Coupon code</th>
+              <th>Percent</th>
+              <th>Valid from </th>
+              <th>Valid to</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          
+        
+          <tbody>
+            {% for coupon in coupons %}
+  
+          <tr>
+            <td>{{coupon.couponcode}}</td>
+            <td>{{coupon.percent}}</td>
+            <td>{{coupon.valid_from}}</td>
+            <td>{{coupon.valid_to}}</td>
+            <td><a class="btn btn-sm btn-primary" href="editcoupon/{{coupon.id}}">Edit</a></td>
+            <td><a class="btn btn-sm btn-danger" href="deletecoupon/{{coupon.id}}">Delete</a></td>
+            
+            
+          </tr>
+          {%endfor%}
+          </tbody>
+          
+          
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock content%}

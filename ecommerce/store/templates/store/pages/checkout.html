@@ -1,0 +1,656 @@
+
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <!-- Breadcrumb Section Begin -->
+    
+    <!-- Breadcrumb Section End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+                <div class="row " style="margin-top: 8rem;">
+                    
+                    <div class="col-lg-8 col-md-6">
+                        
+                        <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
+                        here</a> to enter your code</h6>
+                        <h6 class="checkout__title">Billing Details</h6>
+                        <div class="box-element " id="form-wrapper">         
+                            {% if shippingaddress %}
+                                {% for shippingaddress in shippingaddress %}
+                                    <div id="addresses">
+                                        {% csrf_token %}  
+                                        <input type="radio" class="radio-button" id="shippingaddressid" name="shippingaddressId" value="{{shippingaddress.id}}" checked style="margin-right: 185px;">
+                                        <span class="cart__close "><i data-product = {{item.product.id}} data-action="delete" class="fa fa-close update-cart" data-size_variant="{{item.size_variant.size_name}}"></i></span>
+                                        
+                                        <br>
+                                        
+                                        <label for="html" id="addresses-label">
+                                            <div class="card-body">
+                                                <div class="card-title">
+                                                    <b>  {{shippingaddress.name}}</b>
+                                                </div>
+                                                <div class="card-subtitle">
+                                                    {{shippingaddress.phone}}
+                                                </div>
+                                                <div class="card-text">
+                                                    {{shippingaddress.address}}, {{shippingaddress.city}}, {{shippingaddress.state}}, {{shippingaddress.zipcode}}
+                                                </div>
+                                            </div>  
+                                        </label>
+                                    </div>
+                                {% endfor %}
+
+                                <div id="addressbox">
+                                    
+                                </div>
+
+                                <input id="deliver-button" class="btn btn-success" onclick="deliverHere()" value="Deliver here">
+                                <hr>
+                                <div data-toggle="modal" data-target="#newShippingFrom" id="addnewaddressbtn">
+                                    <p  class="text-success"><b>+ Add New Address</b></p>
+                                </div>
+
+                            {% else %}
+
+                                <div id="addressbox">
+                                    
+                                </div>
+
+                                <div class="mb-3 d-none" id="deliver-button">
+                                    <input  class="btn btn-success" onclick="deliverHere()" value="Deliver here">
+                                </div>
+                                
+                                <div data-toggle="modal" data-target="#newShippingFrom" class="d-none" id="addnewaddressbtn">
+                                    <p class="text-success"><b>+ Add New Address</b></p>
+                                </div>
+
+                                <form id="shippingform" class="p-3"> 
+                                    {% csrf_token %}
+                                    
+                                    <div id="shipping-info" >
+                                        
+                                        <div class="checkout__input row">
+                                    
+                                            <div class="col-lg-6">
+                                                <div class="checkout__input">
+                                                    <p>First Name<span>*</span></p>
+                                                    <input type="text" placeholder="Name" name="name">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="checkout__input">
+                                                    <p>Phone Number<span>*</span></p>
+                                                    <input type="text" placeholder="10-digit mobile number" name="phone">
+                                                </div>
+                                            </div>
+                                    
+                                            <div class="col-lg-12">
+                                                <p requried>Address<span>*</span></p>
+                                            </div>
+                                            
+                                            <div class="col-lg-6">
+                                                <input type="text" placeholder="Street Address" class="checkout__input__add" name="address" required>
+                                            </div>
+                                            <div class="col-lg-6">   
+                                                <input type="text" placeholder="Apartment, suite, unite ect (optinal)" name = "address1">
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="checkout__input col-lg-6">
+                                                <p>Town/City<span>*</span></p>
+                                                <input type="text" name="city" requred>
+                                            </div>
+                                            <div class="checkout__input col-lg-6">
+                                                <p>State<span>*</span></p>
+                                                <input type="text" name="state" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="checkout__input col-lg-6">
+                                                <p>Country<span>*</span></p>
+                                                <input type="text" name = "country" required>
+                                            </div>
+                                            <div class="checkout__input col-lg-6">
+                                                <p>Postcode / ZIP<span>*</span></p>
+                                                <input type="text" name = "zipcode" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success"  id="address-button">Save and Deliver here</button>
+                                </form> 
+
+                               
+
+
+                               
+                            {% endif %}
+                            
+                            <!-- Modal -->
+                            <div class="modal fade" id="newShippingFrom" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <form id="shippingform1" class="p-3 shippingform1"> 
+                                        {% csrf_token %}
+                                        <div class="modal-content">
+                                            <div class="modal-header text-center">
+                                            <h5 class="modal-title w-100" id="exampleModalLongTitle">Add Shipping Address</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            
+                                                    <div id="shipping-info" >
+                                                        
+                                                        <div class="checkout__input row">
+                                                    
+                                                            <div class="col-lg-6">
+                                                                <div class="checkout__input">
+                                                                    <p>First Name<span>*</span></p>
+                                                                    <input type="text" placeholder="Name" name="name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="checkout__input">
+                                                                    <p>Phone Number<span>*</span></p>
+                                                                    <input type="text" placeholder="10-digit mobile number" name="phone">
+                                                                </div>
+                                                            </div>
+                                                    
+                                                            <div class="col-lg-12">
+                                                                <p requried>Address<span>*</span></p>
+                                                            </div>
+                                                            
+                                                            <div class="col-lg-6">
+                                                                <input type="text" placeholder="Street Address" class="checkout__input__add" name="address" required>
+                                                            </div>
+                                                            <div class="col-lg-6">   
+                                                                <input type="text" placeholder="Apartment, suite, unite ect (optinal)" name = "address1">
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="checkout__input col-lg-6">
+                                                                <p>Town/City<span>*</span></p>
+                                                                <input type="text" name="city" requred>
+                                                            </div>
+                                                            <div class="checkout__input col-lg-6">
+                                                                <p>State<span>*</span></p>
+                                                                <input type="text" name="state" required>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="row">
+                                                            <div class="checkout__input col-lg-6">
+                                                                <p>Country<span>*</span></p>
+                                                                <input type="text" name = "country" required>
+                                                            </div>
+                                                            <div class="checkout__input col-lg-6">
+                                                                <p>Postcode / ZIP<span>*</span></p>
+                                                                <input type="text" name = "zipcode" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"  data-dismiss="modal" onclick=clearForm()>Cancel</button>
+                                            <button type="submit" class="btn btn-success"  id="address-button">Save and Deliver here</button>
+                                        </div>
+                                    </form> 
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal Ends-->
+                        </div>
+                        <br>
+
+                        <h6 class="checkout__title" id="payment-options">Payment Options</h6>
+                        <div class="box-element d-none" id="payment-info">
+                            <a class="btn btn-success w-100 " id="make-payment" style="background-color: #009a7b;">COD | Place Order</a>
+                            <small>Pay with Razorpay</small>
+                            <a href="" class="btn btn-primary w-100 payWithRazorpay">Razorpay | Place Order</a>
+                            
+                            <!-- <button id="make-payment">Make Payment</button> -->
+                        </div>
+                    
+                    </div>
+
+                    <div class="col-lg-4 col-md-6" >
+                        <div class="cart__discount mt-4">
+                            <h6>Discount codes</h6>
+
+                                <div class="alert alert-danger" role="alert" id="coupon-error-msg" hidden>
+                                    
+                                </div>
+
+                                <div class="alert alert-success" role="alert" hidden id="coupon-success-msg">
+                                   
+                                  </div>
+                                <!-- <div class="alert alert-light alert-dismissible fade show mt-3" hidden role="alert" id="error-alert">
+                                    <strong class="text-danger" id="coupon-error-msg"></strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div> -->
+                          
+                            <form action="" id="coupon-form">
+                                <input id="carttotal" type="text" hidden value="{{order.get_cart_total}}">
+                                <input id="orderid" type="text" hidden value="{{order.id}}">
+                                <input  type="text" name="couponcode" placeholder="Coupon code">
+                                <button type="submit" value="Apply">Apply</button>
+                            </form>
+                        </div>
+                        <div class="checkout__order">
+
+                            <h4 class="order__title">Order Summary</h4>
+                            <div class="checkout__order__products">Items ({{order.get_cart_items}}) <span id="test-total">&#8377; {{order.get_cart_total}}</span></div>
+                            <div class="checkout__order__products" hidden id="discounted_amount">Discount applied <span></span></div>
+                           
+                            <ul class="checkout__total__products">
+                                <li>Delivery    <span style="color:#009a7b;"><strong>Free</strong></span></li>
+                                
+                            </ul>
+                           
+                            <ul class="checkout__total__all">
+                                <li>Payable amount  <span id="coupon-cart-total">&#8377; {{order.get_cart_total}}</span></li>
+                            </ul>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AbBCXk-_rcWeDZj1xcG1O_Y80-wpEOg8JzjANNIzrZeGsNb6gwX4ZJlVR8y6K3kwBFc1UjXoUBOI6kxe&currency=USD" data-namespace="paypal_sdk" ></script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+
+    <script>
+
+
+    /*--------------------------
+        Coupon Management 
+    ---------------------------*/
+
+
+        couponform = document.getElementById('coupon-form')
+
+       
+
+            couponform.addEventListener('submit', function(e){
+                e.preventDefault()
+                console.log("Coupon Submitted... ")
+                addCoupon()
+            
+                })
+
+
+
+        function addCoupon(){
+
+            let total = document.getElementById('carttotal').value
+            let orderid = document.getElementById('orderid').value
+            console.log(total)
+            console.log(orderid)
+
+            var couponcode = couponform.couponcode.value
+
+            console.log(couponcode)
+
+            var csrftoken =  $('input[name=csrfmiddlewaretoken]').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/add_coupon/",
+                data: {
+                    'couponcode':couponcode,
+                    'total': total,
+                    'orderid': orderid,
+                    csrfmiddlewaretoken: csrftoken
+                },
+                success: function (response) {
+                    console.log(response)
+
+                    if (response.error_message){
+                        document.getElementById('coupon-success-msg').hidden = true
+                        document.getElementById('coupon-error-msg').hidden = false
+                        document.getElementById('coupon-error-msg').innerHTML = response.error_message
+                    }
+
+                    if (response.coupon_discount){
+
+                        document.getElementById('coupon-error-msg').hidden = true
+                        document.getElementById('coupon-success-msg').hidden = false
+                        document.getElementById('coupon-success-msg').innerHTML = response.coupon_discount + '% discount applied'
+                        document.getElementById('coupon-cart-total').innerHTML = '&#8377; '+response.discounted_price
+                        document.getElementById('discounted_amount').hidden = false
+                        document.getElementById('discounted_amount').firstElementChild.innerHTML = '&#8377; '+response.discounted_amount
+
+                    }
+
+
+                    
+                }
+            });
+
+        }
+
+    /*--------------------------
+        Add Address
+    ---------------------------*/
+    function clearForm() {
+        $("#shippingform1").trigger('reset')
+    }
+
+   //function clearForm() {
+    //console.log('clearning from')
+        //$( "shippingform1" ).reset()
+        //$(this).find("form").reset()
+      //}
+
+    //$('#newShippingFrom').on('hidden.bs.modal', function () {
+        //$(this).find('shippingform1')[0].reset();
+    //})
+
+    function deliverHere(){
+        document.getElementById("payment-info").classList.remove('d-none')
+    }
+
+    function newAddress() {
+        document.getElementById("shipping-info").classList.remove('d-none')
+        var radioButton = document.getElementsByClassName("radio-button");
+            radioButton.checked = false;
+        }
+        
+    //function cancelNewAddress() {
+        //document.getElementById("shipping-info").classList.add('d-none')
+        //}
+
+
+   
+   
+    var addressBox = document.getElementById('addressbox')
+    console.log(addressBox)
+
+    try{
+        var shippingform = document.getElementById('shippingform') 
+        shippingform.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log("Form Submitted... ")
+        addAddress()
+        
+        })
+    }
+    catch{
+        var shippingform1 = document.getElementById('shippingform1') 
+        shippingform1.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log("Form Submitted... ")
+        addAddress()
+        
+        })
+    }
+    
+    
+    
+
+    function addAddress(){
+        console.log('sending data.. ')
+        var shippingInfo = {
+            'name':null,
+            'phone':null,
+            'address': null,
+            'city':null,
+            'state':null,
+            'zipcode':null,
+            'shippingaddressId':null,
+
+        }
+        try{
+            shippingInfo.name = shippingform.name.value
+            shippingInfo.phone = shippingform.phone.value
+            shippingInfo.address = shippingform.address.value
+            shippingInfo.city = shippingform.city.value
+            shippingInfo.state = shippingform.state.value
+            shippingInfo.zipcode = shippingform.zipcode.value
+        }
+        catch{
+            shippingInfo.name = shippingform1.name.value
+            shippingInfo.phone = shippingform1.phone.value
+            shippingInfo.address = shippingform1.address.value
+            shippingInfo.city = shippingform1.city.value
+            shippingInfo.state = shippingform1.state.value
+            shippingInfo.zipcode = shippingform1.zipcode.value
+        }
+        
+        //shippingInfo.shippingaddressId = shippingform.shippingaddressId.value
+
+
+        var csrftoken =  $('input[name=csrfmiddlewaretoken]').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/add_address/",
+            data: {
+                'name':shippingInfo.name,
+                'phone':shippingInfo.phone,
+                'address':shippingInfo.address,
+                'city':shippingInfo.city,
+                'state':shippingInfo.state,
+                'zipcode':shippingInfo.zipcode,
+                csrfmiddlewaretoken: csrftoken
+            },
+
+            success: function (response) {
+                console.log(typeof(response))
+                console.log(response)
+                console.log(response[0].fields.name)
+                console.log(response[0].fields.phone)
+                console.log(response[0].fields.address)
+                console.log(response[0].fields.city)
+                console.log(response[0].fields.state)
+                console.log(response[0].fields.zipcode)
+                newshippingaddressId = response[0].pk
+
+                
+
+                addressBox.innerHTML += `
+                <div>
+                <input type="radio" class="radio-button" id="shippingaddressid" name="shippingaddressId" value="${response[0].pk}" checked>
+                <br>
+                <label for="html" id="addresses-label">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <b> ${response[0].fields.name}</b>
+                        </div>
+                        <div class="card-subtitle">
+                            ${response[0].fields.phone}
+                        </div>
+                        <div class="card-text">
+                            ${response[0].fields.address},  ${response[0].fields.city}, ${response[0].fields.state}, ${response[0].fields.zipcode}
+                        </div>
+                    </div>  
+                </label>
+                </div>
+                `
+
+                document.getElementById('payment-info').classList.remove('d-none')
+                try{
+                    document.getElementById('shippingform').classList.add('d-none')
+                }
+                catch{
+                }
+                document.getElementById('deliver-button').classList.remove('d-none')
+                document.getElementById('addnewaddressbtn').classList.remove('d-none')
+                document.getElementById("shippingform1").reset();
+                $('#newShippingFrom').modal('hide');
+                
+                
+                /*var x = document.createElement("INPUT");
+                x.setAttribute("type", "radio");
+                x.setAttribute("class", "radio-button");
+                x.setAttribute("name", "shippingaddressId");
+                x.setAttribute('checked', true);
+                x.setAttribute("value", value);
+                
+                const addresses = document.getElementById("addresses");
+                addresses.appendChild(x);
+                var mybr = document.createElement('br');
+                addresses.appendChild(mybr);
+            
+                var label = document.createElement("Label");
+                addresses.appendChild(label);
+                var card_body = document.createElement("div")
+                card_body.setAttribute("class", "card-body")
+                label.appendChild(card_body)
+                
+                var card_title =  document.createElement("div")
+                card_title.setAttribute("class", "card-title")
+                card_body.appendChild(card_title)
+                const name = document.createTextNode(response[0].fields.name);
+                card_title.appendChild(name)
+                var card_subtitle = document.createElement("div")
+                card_subtitle.setAttribute("class", "card-subtitle")
+                card_body.appendChild(card_subtitle)
+                const phone = document.createTextNode(response[0].fields.phone)
+                card_subtitle.appendChild(phone)
+                var card_text = document.createElement("div")
+                card_text.setAttribute("class", "card-text")
+                card_body.appendChild(card_text)
+                const address1 = document.createTextNode(response[0].fields.address+", ");
+                card_text.appendChild(address1)
+                const city = document.createTextNode(response[0].fields.city+", ")
+                card_text.appendChild(city)
+                const state = document.createTextNode(response[0].fields.state+", ")
+                card_text.appendChild(state)
+                const zipcode = document.createTextNode(response[0].fields.zipcode)
+                card_text.appendChild(zipcode)*/
+
+                // const para = document.createElement("p");
+                // const node = document.createTextNode("This is new.");
+                // para.appendChild(node);
+                // const element = document.getElementById("addresses");
+                // element.appendChild(para);
+            }
+        });
+
+        }
+
+/*--------------------------
+    COD Payment
+---------------------------*/
+
+
+
+document.getElementById('make-payment').addEventListener('click', function(e){
+    processOrder()
+})
+
+
+
+    // Render the PayPal button into #paypal-button-container
+    paypal_sdk.Buttons({
+
+        // Set up the transaction
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: parseFloat(total/84).toFixed(2)
+                    }
+                }]
+            });
+        },
+
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(orderData) {
+                // Successful capture! For demo purposes:
+                console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                var transaction = orderData.purchase_units[0].payments.captures[0];
+                alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+
+                processOrder()
+
+                // Replace the above to show a success message within this page, e.g.
+                // const element = document.getElementById('paypal-button-container');
+                // element.innerHTML = '';
+                // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                // Or go to another URL:  actions.redirect('thank_you.html');
+            });
+        }
+
+
+    }).render('#paypal-button-container');
+
+
+
+
+    try{
+    
+            var total = document.getElementById('coupon-cart-total').value
+        
+            if (total == null || total == undefined){
+                var total = document.getElementById('carttotal').value
+            }
+        
+                console.log('total: ', total)
+        
+                function processOrder(){
+                    console.log('payment button clicked')
+        
+                    var orderData = {
+                        'shippingaddressId': document.getElementById('shippingaddressid').value,
+                        'total':total,
+                    }
+                    
+                    var url = '/process_order/'
+        
+                    fetch (url, {
+                        method: 'POST',
+                        headers:{
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken':csrftoken,
+                        },
+                        body:JSON.stringify({'orderdata':orderData})
+                    })
+        
+                    .then((response) => response.json())
+                    .then((data) => { 
+                        console.log('success:',data)
+                        //alert('Transaction completed')
+                        window.location.href = "{% url 'order_complete' %}"
+                    })
+        
+        
+        
+                }
+        }
+        
+    catch{
+    
+    }
+    
+
+
+
+
+
+
+    </script>
+
+
+{% endblock content %}

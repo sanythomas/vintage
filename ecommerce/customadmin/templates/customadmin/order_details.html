@@ -1,0 +1,55 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid px-4">
+    <div class="row my-5">
+        <div>
+            <h3 class="fs-4 mb-3">Order Details</h3>
+            
+        </div>
+        <div>
+            <a class="btn btn-sm btn-outline-success float-end mb-3 " href="addorderitem">Add Order Item</a>
+        </div>
+        <div class="col">
+            <table id="orderitemtable" class="table bg-white rounded shadow-sm  table-hover" style="width: 100%;">
+                <thead>
+                    <tr>
+                     
+                        <th>Product</th>
+                        <th>Order</th>
+                        <th>Quantity</th>
+                        <th>Date added</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        
+                    </tr>
+                </thead>
+    
+                
+                <tbody>
+                    {% for orderitem in orderitem %}
+                    <tr>
+                        <td>{{orderitem.product.name}}</td>
+                        <td>{{orderitem.order.id}}</td>
+                        <td>{{orderitem.quantity}}</td>
+                        <td>{{orderitem.date_added}}</td>
+                        <td><a class="btn btn-sm btn-primary" href="editproduct/{{order.id}}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="deleteorder/{{orderitem.order.id}}">Delete</a></td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+        </div>
+
+
+
+ 
+    </div>
+</div>
+
+{% endblock content%}

@@ -1,0 +1,210 @@
+
+<div class="col-lg-3">
+    <div class="shop__sidebar">
+        <div class="shop__sidebar__search">
+            <form id="search-form">
+                {% csrf_token %}
+                <input type="text" id="search-input" class="search" name="q" placeholder="Search...">
+                <button type="reset"><span class="icon_search"></span></button>
+                
+            </form>
+            <div id="results-box" class="results-card d-none"></div>
+        </div>
+        <div class="shop__sidebar__accordion">
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-heading">
+                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                    </div>
+                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                                <ul class="nice-scroll">
+                                    {% for category in categories %}
+                                        {% if category.offer %}
+                                            <li><a class="sidebar_category_links" href="{% url 'categoryview' category.category_name %}">{{category.category_name}} ({{category.products_set.all.count}})</a> <span class="text-success fw-bold">{{category.offer.discount}}% off</span></li>
+                                        {% else %}
+                                            <li><a class="sidebar_category_links" href="{% url 'categoryview' category.category_name %}">{{category.category_name}} ({{category.products_set.all.count}})</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          
+                <div class="card">
+                    <div class="card-heading">
+                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                    </div>
+                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="shop__sidebar__price">
+                                <ul id = "filter-list">
+                                    <li><a value="200">&#8377; 200.00 - &#8377; 299.00</a></li>
+                                    <li><a value="300">&#8377; 300.00 - &#8377; 399.00</a></li>
+                                    <li><a value="400">&#8377; 400.00 - &#8377; 499.00</a></li>
+                                    <li><a value="500">&#8377; 500.00 - &#8377; 599.00</a></li>
+                                    <li><a value="600">&#8377; 600.00 - &#8377; 699.00</a></li>
+                                    <li><a value="700">&#8377; 700 +</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-heading">
+                        <a data-toggle="collapse" data-target="#collapseFour">Size</a>
+                    </div>
+                    <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="shop__sidebar__size">
+                                {% for size_variant in size_variant %}
+                                <label for="sm">{{size_variant.size_name}}
+                                    <input value="{{size.size__id}}" type="radio" id="sm">
+                                </label>
+                                {% endfor %}
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-heading">
+                        <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
+                    </div>
+                    <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="shop__sidebar__color">
+                                {% for color_variant in color_variant %}
+                                <label class="c-1" for="sp-1" style="background:{{color_variant.color_name}}">
+                                    <input value="" type="radio" id="sp-1">
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    const f_url = window.location.href
+    const searchForm = document.getElementById('search-form')
+    const searchInput = document.getElementById('search-input')
+    const resultsBox = document.getElementById('results-box')
+    const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
+
+    const sendSearchData = (item) => {
+
+        $.ajax({
+            type: 'POST',
+            url: '/shop/search/',
+            data:{
+                'csrfmiddlewaretoken': csrf,
+                'search_products': item
+            },
+            success: (res) => {
+               
+                const data = res.data
+                console.log(data)
+
+                if (Array.isArray(data)){
+                    resultsBox.innerHTML = ""
+                    data.forEach( search_products => {
+                        resultsBox.innerHTML += `
+                            <a href="shop-details/${search_products.pk}" class="search_item"> 
+                                <div class="row mt-2 mb-2"> 
+                                    <div class="col-4"> 
+                                        <img src="${search_products.image}"" class="search-img"> 
+                                    </div>
+                                    <div class="col-8 my-auto"> 
+                                        <h6>${search_products.name}</h6>
+                                    </div>
+                                </div>
+                            </a> 
+                        `
+                    })
+                }else{
+                    if (searchInput.value.length > 0){
+                        resultsBox.innerHTML = `<b>${data}</b>`
+                    } else {
+                        resultsBox.classList.add('d-none')
+                    }
+                }
+
+
+            },
+            error: (err) => {
+                console.log(err)
+            }
+
+        })
+
+    }
+
+
+
+    searchInput.addEventListener('keyup', e => {
+        console.log(e.target.value)
+        if (resultsBox.classList.contains('d-none')){
+            resultsBox.classList.remove('d-none')
+        }
+
+        sendSearchData (e.target.value)
+    })
+
+    
+
+
+
+
+    // Active link for the selected category
+    const currentlocation = location.href
+    console.log(location.href)
+    const sidelinks = document.getElementsByClassName("sidebar_category_links")
+    console.log(sidelinks[0].href)
+    for(var i=0; i < sidelinks.length; i++){
+        if(sidelinks[i].href === currentlocation){
+            
+            sidelinks[i].classList.add = "shop__sidebar__brand_active"
+        }
+    }
+
+
+
+    //............Filter using price..............
+
+    // IE does not know about the target attribute. It looks for srcElement
+    // This function will get the event target in a browser-compatible way
+
+    function getEventTarget(e) {
+        e = e || window.event;
+        return e.target || e.srcElement; 
+    }
+
+
+
+    var filter_list = document.getElementById('filter-list');
+
+    filter_list.onclick = function(event) {
+        var target = getEventTarget(event);
+        console.log(target.getAttribute("value"))
+       
+        var url = new URL(window.location.href) 
+        var search_params = url.searchParams; 
+        search_params.set('price', target.getAttribute("value"))
+        url.search = search_params.toString()
+        console.log(url.search)
+        location = url
+        
+    };
+
+
+
+</script>

@@ -1,0 +1,74 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid h-100">
+    <div class="col-md-12 ml-auto">
+        <a href="{% url 'order' %}"><button  class=" btn btn-secondary text-light">Back</button></a>
+      </div>
+    
+    <div class="row ">
+        <div style="text-decoration: underline;" class="font-weight-bold text-decoration-underline text-secondary pt-5 col-md-12 d-flex justify-content-center">
+            <h4>Enter New Order Details</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12  ">
+        <!-- form start -->
+            <form class="p-5 w-100 text-dark " method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <div class="form-group ">
+                    
+                    <label for="cars">Customer</label>
+                    <select name="user" id="category" >
+                        {% for user in user %}
+                            <option value="{{user.id}}">{{user.first_name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <hr>
+
+                <div class="form-group ">
+                    
+                    <label for="cars">Complete</label>
+                    <select name="complete" id="cars">
+                        <option value="False">No</option>
+                        <option value="True">Yes</option>
+                    </select>
+                </div>
+
+                <hr>
+                
+                <div class="form-group col-md-4">
+                    <label for="quantity">Transaction id</label>
+                    <input name="transaction_id" type="text" class="form-control col-md-6">
+                  </div>
+          
+                <hr>
+                <button type="submit" class="btn btn-secondary text-light ">Submit</button>
+
+            </form>
+        </div>
+    </div>
+            <!-- form end -->
+    <div class="row">
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+                    <strong class="text-danger">{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+</div>
+
+    
+      
+
+{% endblock content%}

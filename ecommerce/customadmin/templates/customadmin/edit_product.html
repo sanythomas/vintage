@@ -1,0 +1,156 @@
+{% extends 'customadmin/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid h-100">
+    <div class="col-md-12 ml-auto">
+        <a href="{% url 'products' %}"><button type="submit" class=" btn btn-sm btn-secondary text-light">Back</button></a>
+      </div>
+    
+    <div class="row ">
+        <div style="text-decoration: underline;" class="font-weight-bold text-decoration-underline text-secondary pt-5 col-md-12 d-flex justify-content-center">
+            <h4>Enter New Product Details</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12  ">
+        <!-- form start -->
+            <form class="p-5 w-100 text-dark " method="post" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <div class="form-group ">
+                    <label for=""><strong>Product Name</strong></label>
+                    <input value="{{product.name}}" name="product_name" type="text" class="form-control" placeholder="Product Name" >
+                </div>
+                <br>
+                <div class="form-group ">
+                    <label for=""><strong>Price</strong></label>
+                    <input value="{{product.price}}" name="price" type="number" class="form-control" placeholder="Price">
+                </div>
+                <br>
+                <div class="form-group ">
+                    <label for=""><strong>Stock</strong></label>
+                    <input value="{{product.stock}}" name="stock" type="number" class="form-control" placeholder="Stock">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for=""><strong>Description</strong></label>
+                    <input value="{{product.description}}" name="description" type="text" class="form-control" placeholder="Description">
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for=""><strong>Image</strong></label>
+                    <br>
+                    <small>"currently: "
+                        <a href="{{product.imageURL}}">{{product.image}}</a>
+                        <br>
+                        "change: "
+                        <input value="{{product.imageURL}}" name="image" type="file"  id="id_image">
+                    </small> 
+                 
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for=""><strong>Image1</strong></label>
+                    <br>
+                    <small>"currently: "
+                        <a href="{{product.image1URL}}">{{product.image1}}</a>
+                        <br>
+                        "change: "
+                        <input value="{{product.image1URL}}" name="image1" type="file">
+                    </small> 
+                 
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for=""><strong>Image2</strong></label>
+                    <br>
+                    <small>"currently: "
+                        <a href="{{product.image2URL}}">{{product.image2}}</a>
+                        <br>
+                        "change: "
+                        <input value="{{product.image2URL}}" name="image2" type="file">
+                    </small> 
+                 
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for=""><strong>Image3</strong></label>
+                    <br>
+                    <small>"currently: "
+                        <a href="{{product.image3URL}}">{{product.image3}}</a>
+                        <br>
+                        "change: "
+                        <input value="{{product.image3URL}}" name="image3" type="file">
+                    </small> 
+                 
+                </div>
+                <hr>
+                
+                <div class="form-group">
+                    
+                    <label for="offer">Choose an offer Percetage:</label>
+                        <select name="offerid" id="offer" >
+                            <option value="" selected>No Offer</option>
+                        {% for offer in offer %}
+                           
+                            {% if  offer.discount == product.offer.discount %}
+                                <option value="{{product.offer_id}}" selected>{{product.offer.discount}}</option>
+                            {%else %}
+                               
+                                <option value="{{offer.id}}">{{offer.discount}}</option>
+
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                        
+                </div>
+                <hr>
+          
+                <div class="form-group">
+                    
+                    <label for="category">Choose a Category:</label>
+                        <select name="category" id="category" >
+                          
+                            {% for category in category %}
+                            {% if  category.category_name == product.category.category_name %}
+                                <option value="{{product.category_id}}" selected>{{product.category.category_name}}</option>
+                            {%else %}
+                                <option value="{{category.id}}">{{category.category_name}}</option>
+
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        
+                </div>
+                
+                <div class="form-group">
+                    
+                </div>
+                
+                <button type="submit" class="btn btn-sm btn-secondary text-light">Submit</button>
+            </form>
+        </div>
+    </div>
+            <!-- form end -->
+    <div class="row">
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show mt-3" role="alert">
+                    <strong class="text-danger">{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+</div>
+
+
+{% endblock content%}
