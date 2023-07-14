@@ -136,7 +136,6 @@
                             <div class="header__top__hover "> 
                                 <span style="margin-right:28px;">Hello <strong>{{user.first_name}}</strong><i class="arrow_carrot-down dropdown-menu"></i></span>
                                 <ul class=" list-group p-2">
-                                
                                     <li class="list-group-item pb-2"><a href="{% url 'account' %}">My Profile</a></li>
                                     <li class="list-group-item pb-2"><a href="{% url 'orders' %}">Orders</a></li>
                                     <li class="list-group-item pb-2"><a href="{% url 'my-addressbook' %}">Address Book</a></li>
@@ -184,12 +183,27 @@
                             <li><a href="{% url 'blog' %}">Blog</a></li>
                             <li><a href="{% url 'contact' %}">Contacts</a></li>
                             <li><a href="{% url 'about' %}">About us</a></li>
+                            
+
                         </ul>
+                        
                     </nav>
                 </div>
                 <div class="col-lg-5 col-md-3">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="{% static 'images/icon/search.png' %}" alt=""></a>
+                        <!-- Search Begin -->
+                        <div class="search-switch">
+                            <!-- <a href="#" class="search-switch"><img src="{% static 'images/icon/search.png' %}" alt=""></a> -->
+                            <form class="form-inline my-2 my-lg-0" action="/shop/search">
+                                <div class="input-group">
+                                    <input name="q" type="text" class="form-control" placeholder="search"/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-dark" type="submit" id="button-addon2">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Search End -->
                         <a href="{% url 'wishlist' %}"><img src="{% static 'images/icon/heart.png' %}" alt=""><span class="" id="wishlistcount">{{wishlistcount}}</span></a>
                         
                         
@@ -220,7 +234,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="{% static 'images/footer-logo.jpeg' %}" alt=""></a>
+                            <a href="#"><img src="{% static 'images/footer-logo.jpeg' %}" alt style="margin-top:20px"></a>
                         </div>
                         <p>The customer is at the heart of our unique business model, which includes design.</p>
                         <a href="#"><img src="{% static 'images/payment.png' %}" alt=""></a>
@@ -278,17 +292,7 @@
     </footer>
     <!-- Footer Section End -->
 
-    <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search End -->
-
+    
     <!-- Js Plugins -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

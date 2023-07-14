@@ -225,15 +225,22 @@ def categoryView (request, categoryname):
     return render(request, 'store/pages/category_view.html', context)
 
 
+# def profile(request):
+# 	msg=None
+# 	if request.method=='POST':
+# 		form=ProfileForm(request.POST,instance=request.user)
+# 		if form.is_valid():
+# 			form.save()
+# 			msg='Data has been saved'
+# 	form=ProfileForm(instance=request.user)
+# 	return render(request, 'store/pages/profile.html',{'form':form,'msg':msg})
+
 def profile(request):
-	msg=None
-	if request.method=='POST':
-		form=ProfileForm(request.POST,instance=request.user)
-		if form.is_valid():
-			form.save()
-			msg='Data has been saved'
-	form=ProfileForm(instance=request.user)
-	return render(request, 'store/pages/profile.html',{'form':form,'msg':msg})
+    user = request.user
+    shippingaddress = user.shippingaddress_set.all()
+   
+    context = {'shippingaddress':shippingaddress}
+    return render(request, 'store/pages/profile.html',context)
 
 
 
@@ -289,29 +296,33 @@ def store(request):
         }
     return render(request, 'store/store.html', context)
 
+def search(request):
+    q=request.GET
+    data=Products.objects.filter(name__icontains=q).order_by('-id')
+    return render(request,'store/pages/search.html',{'data':data})
 
-def search_results(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest': # instead of request.is_ajax which is depreciated
-        res = None
-        search_products = request.POST.get('search_products')
-        qs = Products.objects.filter(name__icontains=search_products)
-        if len(qs) > 0 and len(search_products) > 0:
-            data = []
-            for pos in qs:
-                item = {
-                    'pk': pos.pk, 
-                    'name': pos.name,
-                    'image':str(pos.imageURL)
-                    #'category':pos.category -> Got an error object of type Category is not JSON serializable
-                }
-                data.append(item)
-                res = data
-        else:
-            res = 'No products found!'
+# def search_results(request):
+#     if request.headers.get('x-requested-with') == 'XMLHttpRequest': # instead of request.is_ajax which is depreciated
+#         res = None
+#         search_products = request.POST.get('search_products')
+#         qs = Products.objects.filter(name__icontains=search_products)
+#         if len(qs) > 0 and len(search_products) > 0:
+#             data = []
+#             for pos in qs:
+#                 item = {
+#                     'pk': pos.pk, 
+#                     'name': pos.name,
+#                     'image':str(pos.imageURL)
+#                     #'category':pos.category -> Got an error object of type Category is not JSON serializable
+#                 }
+#                 data.append(item)
+#                 res = data
+#         else:
+#             res = 'No products found!'
 
-        return JsonResponse({'data': res})
+#         return JsonResponse({'data': res})
 
-    return JsonResponse({})
+#     return JsonResponse({})
 
 
 def shop_details(request,id):

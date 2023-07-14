@@ -26,7 +26,7 @@
                         <th>transaction id</th>
                         <th>Details</th>
                         <th>Edit</th>
-                       
+            
                         
                     </tr>
                 </thead>
@@ -47,6 +47,7 @@
 
                         <td><a class="btn btn-sm btn-primary" href="updateorder/{{order.id}}">Update</a></td>
                         
+                        
                     </tr>
                    
                   
@@ -66,14 +67,12 @@
                                                 <div class="col-md-6 fw-bold">
                                                     Item <br>
                                                     Order id<br>
-                                                    Quantity<br>
-                                                    Invoice
+                                                    Quantity
                                                 </div>
                                                 <div class="col-md-6">  
                                                     {{orderitem.product.name}} <br>
                                                     {{orderitem.order.id}} <br>
-                                                    {{orderitem.quantity}} <br>
-                                                    <a href="/ecommerce/store/views.py/view_invoice/{{order.id}}">View Invoice</a>
+                                                    {{orderitem.quantity}}
                                                 </div>
                                             </div>
                                             <br>
