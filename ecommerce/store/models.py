@@ -63,9 +63,6 @@ class Products(models.Model):
     description = models.TextField()
 
     image= models.ImageField( null=True, blank=True)
-    image1= models.ImageField( null=True, blank=True)
-    image2= models.ImageField( null=True, blank=True)
-    image3= models.ImageField( null=True, blank=True)
     trending = models.BooleanField(default=False, help_text="0=default, 1=Trending")
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     offer = models.ForeignKey(Offer,on_delete=models.SET_NULL, null=True, blank=True)
