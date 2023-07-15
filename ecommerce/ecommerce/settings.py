@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-e!jhd*4ybtdmdu!%%@mksdf4jqn@kqot#4hj_+q06nyq3o74k)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.53.196.153', 'localhost']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django',
-        'USER': 'admin',
-        'PASSWORD': 'password',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ecommerce',
+        'USER':'postgres',
+        'PASSWORD': 'Sasethre@1234',
         'HOST':'localhost',
-        'PORT':'',
+        'PORT':'5432',
         }
 }
 
@@ -128,13 +128,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-STATICFILES_DIRS = [
+# STATICFILES_DIRS = [
 
-    os.path.join(BASE_DIR,'store/static'),
-    os.path.join(BASE_DIR,'customadmin/static'),
-]
+#     os.path.join(BASE_DIR,'store/static'),
+#     os.path.join(BASE_DIR,'customadmin/static'),
+# ]
 
 
 MEDIA_URL = 'images/'
