@@ -185,20 +185,24 @@ def addproduct(request):
         category=Category.objects.all()
         color=ColorVariant.objects.all()
         size=SizeVariant.objects.all()
-        return render(request,'customadmin/add_products.html',{'category':category, 'offer':offer, 'color':color, 'size':size})
+        return render(request,'customadmin/add_products.html',{'offer':offer, 'category':category, 'color':color, 'size':size})
 
     if request.method == 'POST':
         product_name = request.POST['product_name']
         price = request.POST['price']
         stock = request.POST['stock']
-        color=request.POST['color']
-        size=request.POST['size']
         description = request.POST['description']
         image = request.FILES['image']
-     
-        Products.objects.create(name=product_name, price=price, stock=stock, description=description,category_id=category, color=color, size=size, image=image)
-                
-   
+        category = request.POST['category']
+        
+        color_ids = request.POST.getlist('color')
+        size_ids = request.POST.getlist('size')
+        
+        product = Products.objects.create(name=product_name, price=price, stock=stock, description=description, image=image, category_id=category)
+
+        product.color_variant.set(color_ids)
+        product.size_variant.set(size_ids)
+        
         print('product added')
         return redirect(products)
 
