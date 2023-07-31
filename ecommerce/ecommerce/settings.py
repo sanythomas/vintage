@@ -128,13 +128,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-STATICFILES_DIRS = [
+# STATICFILES_DIRS = [
 
-    os.path.join(BASE_DIR,'store/static'),
-    os.path.join(BASE_DIR,'customadmin/static'),
-]
+#     os.path.join(BASE_DIR,'store/static'),
+#     os.path.join(BASE_DIR,'customadmin/static'),
+# ]
 
 
 MEDIA_URL = 'images/'
@@ -148,7 +148,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 ACCOUNT_SID = 'ACc62c60e1c9f2e5070ba09ed81e541a6c'
+<<<<<<< HEAD
 AUTH_TOKEN = '30d49d0d4a3ac6adb81f16a2f6a4c4d9'
+=======
+AUTH_TOKEN = 'f2f9ab15666662ae09a7fe4082b70254'
+>>>>>>> origin/main
 
 
 TEMPLATE_CONTEXT_PROCESSORS = (
